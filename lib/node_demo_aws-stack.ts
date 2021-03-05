@@ -11,7 +11,8 @@ export class NodeDemoAwsStack extends cdk.Stack {
     //create vpc 
     const vpc = new ec2.Vpc(this, "Vpc", {
       maxAzs: 2
-    })
+    });
+
 
     //create ledger ec2 backed ecs
     const ledger = this.createLedgerService(vpc)
@@ -21,7 +22,7 @@ export class NodeDemoAwsStack extends cdk.Stack {
 
   }
 
-  createLedgerService(vpc: ec2.Vpc) {
+  createLedgerService(vpc: ec2.IVpc) {
     const cluster = new ecs.Cluster(this, 'ledger-cluster', {
       clusterName: 'ledger-cluster',
       vpc: vpc
@@ -63,10 +64,11 @@ export class NodeDemoAwsStack extends cdk.Stack {
       taskDefinition
     })
     service.connections.allowFromAnyIpv4(ec2.Port.tcp(8090));
+    //TODO: figure out allow ports on external docker port
     return service;
   }
 
-  createNodeAppService(vpc: ec2.Vpc) {
+  createNodeAppService(vpc: ec2.IVpc) {
     const cluster = new ecs.Cluster(this, 'NodeCluster', { vpc })
     return new ecsPatterns.ApplicationLoadBalancedFargateService(this, 'NodeFargateService', {
       cluster,
