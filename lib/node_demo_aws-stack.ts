@@ -3,6 +3,7 @@ import * as ec2 from '@aws-cdk/aws-ec2';
 import * as ecs from '@aws-cdk/aws-ecs';
 import * as ecsPatterns from '@aws-cdk/aws-ecs-patterns';
 import * as path from 'path';
+import * as iam from '@aws-cdk/aws-iam';
 export class NodeDemoAwsStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
@@ -15,8 +16,8 @@ export class NodeDemoAwsStack extends cdk.Stack {
     //create ledger ec2 backed ecs
     const ledger = this.createLedgerService(vpc)
 
+    //create ALB frontend
     const frontend = this.createNodeAppService(vpc)
-
 
   }
 
@@ -31,17 +32,38 @@ export class NodeDemoAwsStack extends cdk.Stack {
       desiredCapacity: 1
     });
 
-    return new ecsPatterns.ApplicationLoadBalancedEc2Service(this, 'ledger-service', {
+    cluster.addDefaultCloudMapNamespace({ name: "ledger.local" });
+
+    const containerTaskRole = new iam.Role(this, 'LedgerTaskRole', {
+      assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com')
+    });
+
+    const taskDefinition = new ecs.Ec2TaskDefinition(this, 'LedgerTask', {
+      taskRole: containerTaskRole,
+    })
+    const logging = new ecs.AwsLogDriver({
+      streamPrefix: "ledger"
+    });
+    const container = taskDefinition.addContainer('LedgerContainer', {
+      image: ecs.ContainerImage.fromRegistry("fluree/ledger:master"),
+      memoryLimitMiB: 31744,
+      logging,
+    })
+
+    container.addPortMappings({
+      containerPort: 8090,
+      protocol: ecs.Protocol.TCP
+    })
+
+    const service = new ecs.Ec2Service(this, 'ledger-service', {
       cluster,
       desiredCount: 1,
-      serviceName: 'ledger-service-app',
-      memoryLimitMiB: 31744,
-      taskImageOptions: {
-        image: ecs.ContainerImage.fromRegistry("fluree/ledger:master"),
-        containerPort: 8090
-      },
-      publicLoadBalancer: true
+      serviceName: 'ledger1',
+      cloudMapOptions: { name: 'ledger1' },
+      taskDefinition
     })
+    service.connections.allowFromAnyIpv4(ec2.Port.tcp(8090));
+    return service;
   }
 
   createNodeAppService(vpc: ec2.Vpc) {
