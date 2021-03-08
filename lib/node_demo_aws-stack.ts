@@ -4,6 +4,9 @@ import * as ecs from '@aws-cdk/aws-ecs';
 import * as ecsPatterns from '@aws-cdk/aws-ecs-patterns';
 import * as path from 'path';
 import * as iam from '@aws-cdk/aws-iam';
+import * as sd from '@aws-cdk/aws-servicediscovery';
+import { Watchful } from 'cdk-watchful';
+
 export class NodeDemoAwsStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
@@ -20,6 +23,9 @@ export class NodeDemoAwsStack extends cdk.Stack {
     //create ALB frontend
     const frontend = this.createNodeAppService(vpc)
 
+    //add watchful
+    const wf = new Watchful(this, 'watchful');
+    wf.watchScope(this);
   }
 
   createLedgerService(vpc: ec2.IVpc) {
@@ -29,7 +35,7 @@ export class NodeDemoAwsStack extends cdk.Stack {
     })
 
     cluster.addCapacity('ledger-scaling-group', {
-      instanceType: new ec2.InstanceType('t3.2xlarge'),
+      instanceType: new ec2.InstanceType('t3.large'),
       desiredCapacity: 1
     });
 
@@ -41,18 +47,20 @@ export class NodeDemoAwsStack extends cdk.Stack {
 
     const taskDefinition = new ecs.Ec2TaskDefinition(this, 'LedgerTask', {
       taskRole: containerTaskRole,
+      networkMode: ecs.NetworkMode.AWS_VPC
     })
     const logging = new ecs.AwsLogDriver({
       streamPrefix: "ledger"
     });
     const container = taskDefinition.addContainer('LedgerContainer', {
       image: ecs.ContainerImage.fromRegistry("fluree/ledger:master"),
-      memoryLimitMiB: 31744,
-      logging,
+      memoryLimitMiB: 7168,
+      logging
     })
 
     container.addPortMappings({
       containerPort: 8090,
+      hostPort: 8090,
       protocol: ecs.Protocol.TCP
     })
 
@@ -60,7 +68,7 @@ export class NodeDemoAwsStack extends cdk.Stack {
       cluster,
       desiredCount: 1,
       serviceName: 'ledger1',
-      cloudMapOptions: { name: 'ledger1' },
+      cloudMapOptions: { name: 'ledger1', dnsRecordType: sd.DnsRecordType.A },
       taskDefinition
     })
     service.connections.allowFromAnyIpv4(ec2.Port.tcp(8090));
@@ -68,7 +76,9 @@ export class NodeDemoAwsStack extends cdk.Stack {
     return service;
   }
 
+
   createNodeAppService(vpc: ec2.IVpc) {
+
     const cluster = new ecs.Cluster(this, 'NodeCluster', { vpc })
     return new ecsPatterns.ApplicationLoadBalancedFargateService(this, 'NodeFargateService', {
       cluster,
