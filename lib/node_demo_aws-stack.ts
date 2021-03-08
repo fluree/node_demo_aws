@@ -7,7 +7,9 @@ import * as iam from '@aws-cdk/aws-iam';
 import * as sd from '@aws-cdk/aws-servicediscovery';
 import { Watchful } from 'cdk-watchful';
 
+
 export class NodeDemoAwsStack extends cdk.Stack {
+
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
@@ -82,6 +84,9 @@ export class NodeDemoAwsStack extends cdk.Stack {
     const cluster = new ecs.Cluster(this, 'NodeCluster', { vpc })
     return new ecsPatterns.ApplicationLoadBalancedFargateService(this, 'NodeFargateService', {
       cluster,
+      memoryLimitMiB: 128,
+      cpu: 128,
+
       taskImageOptions: {
         image: ecs.ContainerImage.fromAsset(path.resolve(__dirname, "../", "nodejs_server_docker")),
         containerPort: 3000
