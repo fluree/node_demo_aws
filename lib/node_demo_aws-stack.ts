@@ -84,12 +84,12 @@ export class NodeDemoAwsStack extends cdk.Stack {
     const cluster = new ecs.Cluster(this, 'NodeCluster', { vpc })
     return new ecsPatterns.ApplicationLoadBalancedFargateService(this, 'NodeFargateService', {
       cluster,
-      memoryLimitMiB: 128,
-      cpu: 128,
+      memoryLimitMiB: 512,
+      cpu: 256,
 
       taskImageOptions: {
         image: ecs.ContainerImage.fromAsset(path.resolve(__dirname, "../", "nodejs_server_docker")),
-        containerPort: 3000
+        containerPort: 3000,
       }
     })
   }
