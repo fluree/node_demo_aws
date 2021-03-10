@@ -5,11 +5,13 @@ import * as ecsPatterns from '@aws-cdk/aws-ecs-patterns';
 import * as path from 'path';
 import * as iam from '@aws-cdk/aws-iam';
 import * as sd from '@aws-cdk/aws-servicediscovery';
+import * as route53 from '@aws-cdk/aws-route53';
 import { Watchful } from 'cdk-watchful';
 
 
 export class NodeDemoAwsStack extends cdk.Stack {
   public readonly vpc: ec2.Vpc;
+  public readonly lbUrl: string;
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
@@ -22,10 +24,20 @@ export class NodeDemoAwsStack extends cdk.Stack {
 
 
     //create ledger ec2 backed ecs
-    const ledger = this.createLedgerService(vpc)
+    const ledger = this.createLedgerService(vpc);
 
     //create ALB frontend
-    const frontend = this.createNodeAppService(vpc)
+    const frontend = this.createNodeAppService(vpc);
+
+    const zone = route53.HostedZone.fromLookup(this, "devZone", {
+      domainName: 'dev.flur.ee'
+    });
+
+    new route53.CnameRecord(this, "NodeLB", {
+      zone: zone,
+      recordName: 'node-app',
+      domainName: frontend.loadBalancer.loadBalancerDnsName
+    })
 
     //add watchful
     const wf = new Watchful(this, 'watchful');

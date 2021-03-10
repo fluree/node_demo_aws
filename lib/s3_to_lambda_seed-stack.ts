@@ -20,7 +20,7 @@ export class S3ToLambdaSeedStack extends cdk.Stack {
             code: lambda.Code.fromAsset("./onboard_lambda"),
             handler: 'onboards3.handler',
             runtime: lambda.Runtime.NODEJS_14_X,
-            vpc: props.vpc,
+            //vpc: props.vpc, //try without the vpc to see if it is necessary to reach the enpoint
             environment: {
                 HOST: props.host,
                 LEDGER: props.ledger

@@ -6,18 +6,25 @@ import { TrafficGeneratorStack } from '../lib/traffic_generator-stack';
 import { S3ToLambdaSeedStack } from '../lib/s3_to_lambda_seed-stack';
 
 const app = new cdk.App();
-const vpc = new NodeDemoAwsStack(app, 'NodeDemoAwsStack').vpc;
+const ledgerStack = new NodeDemoAwsStack(app, 'NodeDemoAwsStack', {
+    env: {
+        account: process.env.CDK_DEFAULT_ACCOUNT,
+        region: 'us-east-1'
+    }
+});
+const vpc = ledgerStack.vpc;
 // new ledger
-// curl --location --request POST 'http://NodeD-NodeF-1BFVLXNJHW4ET-2006904027.us-east-1.elb.amazonaws.com/api/db/jake/test/new_ledger' --header 'Content-Type: application/json'
-// add netork/ledger to the alb url
-const host = 'http://NodeD-NodeF-1BFVLXNJHW4ET-2006904027.us-east-1.elb.amazonaws.com'
-const ledger = 'jake/test';
-const queryUrl = `${host}/api/db/${ledger}/query`;
+const host = "http://node-app.dev.flur.ee"; // url of the node app cluster ALB
+const ledger = 'jake/test'; // ledger name you create with curl command
+
+const queryUrl = `${host}/api/db/${ledger}/query`; // used to ping the node app cluster from the traffic gnerator stack
+
 new TrafficGeneratorStack(app, 'TrafficGeneratorStack', {
     queryUrl: queryUrl,
     env: {
         account: process.env.CDK_DEFAULT_ACCOUNT,
-        region: 'us-east-2'
+        region: 'us-east-2' // switched regions to get more EIPs
     }
-})
+});
+
 new S3ToLambdaSeedStack(app, 'S3ToLambdaSeedStack', { host: host, ledger: ledger, vpc: vpc })

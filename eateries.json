@@ -1,0 +1,19 @@
+{
+    "txn": [
+        {
+            "_id": "eateries",
+            "eateries/name": "Tacos Tacos Tacos",
+            "eateries/age": 4,
+            "eateries/avgrating": 5
+        },
+        {
+            "_id": "eateries",
+            "eateries/name": "Coffee Squared",
+            "eateries/age": 2,
+            "eateries/avgrating": 5
+        }
+    ],
+    "opts": {
+        "timeout": 10000
+    }
+}
