@@ -9,14 +9,16 @@ import { Watchful } from 'cdk-watchful';
 
 
 export class NodeDemoAwsStack extends cdk.Stack {
-
+  public readonly vpc: ec2.Vpc;
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
     //create vpc 
-    const vpc = new ec2.Vpc(this, "Vpc", {
+    this.vpc = new ec2.Vpc(this, "Vpc", {
       maxAzs: 2
     });
+
+    const vpc = this.vpc;
 
 
     //create ledger ec2 backed ecs

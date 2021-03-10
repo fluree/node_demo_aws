@@ -3,13 +3,13 @@ const AWS = require('aws-sdk');
 
 async function sendPost(jsonContent: any) {
     console.log("from post function: ", jsonContent);
-    const url = `${process.env.HOST}/api/db${process.env.LEDGER}/transact`
+    const url = `${process.env.HOST}/api/db/${process.env.LEDGER}/transact`
     const params = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: jsonContent
     }
-    return await fetch(url, params);
+    return await fetch(url, params).then(res => res.text());
 }
 const s3 = new AWS.S3();
 

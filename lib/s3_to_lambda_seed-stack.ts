@@ -2,9 +2,12 @@ import * as cdk from '@aws-cdk/core';
 import * as s3 from '@aws-cdk/aws-s3';
 import * as lambda from "@aws-cdk/aws-lambda";
 import { S3EventSource } from '@aws-cdk/aws-lambda-event-sources';
+import * as ec2 from '@aws-cdk/aws-ec2';
+
 export interface S3ToLambdaSeedStackProps extends cdk.StackProps {
     host: string,
-    ledger: string
+    ledger: string,
+    vpc: ec2.Vpc;
 }
 
 export class S3ToLambdaSeedStack extends cdk.Stack {
@@ -17,6 +20,7 @@ export class S3ToLambdaSeedStack extends cdk.Stack {
             code: lambda.Code.fromAsset("./onboard_lambda"),
             handler: 'onboards3.handler',
             runtime: lambda.Runtime.NODEJS_14_X,
+            vpc: props.vpc,
             environment: {
                 HOST: props.host,
                 LEDGER: props.ledger

@@ -1,0 +1,13 @@
+{
+    "txn": [
+        {
+            "_id": "_predicate",
+            "name": "eateries/favorite",
+            "doc": "describe if favorite",
+            "type": "string"
+        }
+    ],
+    "opts": {
+        "timeout": 10000
+    }
+}
