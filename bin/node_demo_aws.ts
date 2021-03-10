@@ -27,4 +27,9 @@ new TrafficGeneratorStack(app, 'TrafficGeneratorStack', {
     }
 });
 
-new S3ToLambdaSeedStack(app, 'S3ToLambdaSeedStack', { host: host, ledger: ledger, vpc: vpc })
+new S3ToLambdaSeedStack(app, 'S3ToLambdaSeedStack', {
+    host: host, ledger: ledger, vpc: vpc, env: {
+        account: process.env.CDK_DEFAULT_ACCOUNT,
+        region: 'us-east-1'
+    }
+})

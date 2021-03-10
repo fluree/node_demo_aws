@@ -16,10 +16,14 @@ export class TrafficGeneratorStack extends cdk.Stack {
         const cluster = new ecs.Cluster(this, 'TrafficGenCluster', {
             vpc
         })
+        const logging = new ecs.AwsLogDriver({
+            streamPrefix: "traffic-generator"
+        });
 
         const taskDef = new ecs.FargateTaskDefinition(this, 'FargateTaskDef', {});
         taskDef.addContainer('trafficgen', {
             image: ecs.ContainerImage.fromAsset('./traffic_generator'),
+            logging,
             environment: {
                 URL: props.queryUrl
             }
@@ -27,7 +31,7 @@ export class TrafficGeneratorStack extends cdk.Stack {
         new ecs.FargateService(this, 'TrafficGenService', {
             cluster,
             taskDefinition: taskDef,
-            desiredCount: 30
+            desiredCount: 20
         })
 
 

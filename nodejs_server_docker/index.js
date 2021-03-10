@@ -298,6 +298,7 @@ server.post('/api/db/:network/:db/:action', (request, response) => {
         case 'query':
             if (body.query) query = body.query;
             if (body.opts) opts = body.opts;
+            console.log(body.query);
             db = flureenjs.db(flureeDbConn, ledger, opts);
             flureenjs.q(db, query, opts)
                 .then(results => {

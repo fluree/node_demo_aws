@@ -6,7 +6,6 @@ import * as path from 'path';
 import * as iam from '@aws-cdk/aws-iam';
 import * as sd from '@aws-cdk/aws-servicediscovery';
 import * as route53 from '@aws-cdk/aws-route53';
-import { Watchful } from 'cdk-watchful';
 
 
 export class NodeDemoAwsStack extends cdk.Stack {
@@ -38,10 +37,6 @@ export class NodeDemoAwsStack extends cdk.Stack {
       recordName: 'node-app',
       domainName: frontend.loadBalancer.loadBalancerDnsName
     })
-
-    //add watchful
-    const wf = new Watchful(this, 'watchful');
-    wf.watchScope(this);
   }
 
   createLedgerService(vpc: ec2.IVpc) {
@@ -51,7 +46,7 @@ export class NodeDemoAwsStack extends cdk.Stack {
     })
 
     cluster.addCapacity('ledger-scaling-group', {
-      instanceType: new ec2.InstanceType('t3.large'),
+      instanceType: new ec2.InstanceType('t3.medium'),
       desiredCapacity: 1
     });
 
@@ -70,7 +65,7 @@ export class NodeDemoAwsStack extends cdk.Stack {
     });
     const container = taskDefinition.addContainer('LedgerContainer', {
       image: ecs.ContainerImage.fromRegistry("fluree/ledger:master"),
-      memoryLimitMiB: 7168,
+      memoryLimitMiB: 3584,
       logging
     })
 
@@ -96,15 +91,25 @@ export class NodeDemoAwsStack extends cdk.Stack {
   createNodeAppService(vpc: ec2.IVpc) {
 
     const cluster = new ecs.Cluster(this, 'NodeCluster', { vpc })
-    return new ecsPatterns.ApplicationLoadBalancedFargateService(this, 'NodeFargateService', {
+    const ALBFS = new ecsPatterns.ApplicationLoadBalancedFargateService(this, 'NodeFargateService', {
       cluster,
       memoryLimitMiB: 512,
       cpu: 256,
-
       taskImageOptions: {
         image: ecs.ContainerImage.fromAsset(path.resolve(__dirname, "../", "nodejs_server_docker")),
         containerPort: 3000,
       }
-    })
+    });
+
+    const scalableTarget = ALBFS.service.autoScaleTaskCount({
+      minCapacity: 1,
+      maxCapacity: 10
+    });
+
+    scalableTarget.scaleOnCpuUtilization('CPUScaling', {
+      targetUtilizationPercent: 30,
+    });
+
+    return ALBFS;
   }
 }
