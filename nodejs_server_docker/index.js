@@ -338,6 +338,7 @@ server.post('/api/db/:network/:db/:action', (request, response) => {
 
         case 'transact':
             txn = body.txn;
+            console.log("transaction: ", txn);
             if (body.opts) opts = body.opts;
             flureenjs.transact(flureeDbConn, ledger, txn, opts)
                 .then(results => {

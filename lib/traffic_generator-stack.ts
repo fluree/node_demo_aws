@@ -2,7 +2,7 @@ import * as cdk from '@aws-cdk/core';
 import * as ecs from '@aws-cdk/aws-ecs';
 import * as ec2 from '@aws-cdk/aws-ec2';
 export interface TrafficGeneratorProps extends cdk.StackProps {
-    url: string
+    queryUrl: string
 }
 
 export class TrafficGeneratorStack extends cdk.Stack {
@@ -21,7 +21,7 @@ export class TrafficGeneratorStack extends cdk.Stack {
         taskDef.addContainer('trafficgen', {
             image: ecs.ContainerImage.fromAsset('./traffic_generator'),
             environment: {
-                URL: props.url
+                URL: props.queryUrl
             }
         })
         new ecs.FargateService(this, 'TrafficGenService', {

@@ -1,0 +1,72 @@
+{
+    "txn": [
+        {
+            "_id": "_collection",
+            "name": "eateries"
+        },
+        {
+            "_id": "_predicate",
+            "name": "eateries/zip",
+            "doc": "jurisdiction or mail code",
+            "type": "string"
+        },
+        {
+            "_id": "_predicate",
+            "name": "eateries/notes",
+            "type": "string"
+        },
+        {
+            "_id": "_predicate",
+            "name": "eateries/avgrating",
+            "doc": "Average rating from reporting clientele",
+            "type": "int"
+        },
+        {
+            "_id": "_predicate",
+            "name": "eateries/age",
+            "doc": "Age of the establishment, not the owners",
+            "type": "int"
+        },
+        {
+            "_id": "_predicate",
+            "name": "eateries/country",
+            "doc": "Country, if Earth; planet otherwise",
+            "type": "string"
+        },
+        {
+            "_id": "_predicate",
+            "name": "eateries/state",
+            "doc": "State or government jurisdiction area",
+            "type": "string"
+        },
+        {
+            "_id": "_predicate",
+            "name": "eateries/city",
+            "doc": "City in which establishment exists",
+            "type": "string"
+        },
+        {
+            "_id": "_predicate",
+            "name": "eateries/address-line-2",
+            "doc": "Ancillary information, such as suite or PO Box",
+            "type": "string"
+        },
+        {
+            "_id": "_predicate",
+            "name": "eateries/address-line-1",
+            "doc": "Street address of establishment",
+            "type": "string"
+        },
+        {
+            "_id": "_predicate",
+            "name": "eateries/name",
+            "doc": "Name of the establishment",
+            "type": "string",
+            "unique": true,
+            "index": true
+        }
+    ],
+    "opts": {
+        "timeout": 10000
+    }
+}

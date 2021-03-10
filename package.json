@@ -25,6 +25,7 @@
     "@aws-cdk/aws-ecs": "^1.92.0",
     "@aws-cdk/aws-ecs-patterns": "^1.92.0",
     "@aws-cdk/aws-iam": "^1.92.0",
+    "@aws-cdk/aws-lambda-event-sources": "^1.92.0",
     "@aws-cdk/core": "1.92.0",
     "cdk-watchful": "^0.5.125",
     "source-map-support": "^0.5.16"
