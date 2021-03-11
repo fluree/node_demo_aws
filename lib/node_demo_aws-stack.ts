@@ -28,6 +28,7 @@ export class NodeDemoAwsStack extends cdk.Stack {
     //create ALB frontend
     const frontend = this.createNodeAppService(vpc);
 
+    // take register DNS out before final publishing
     const zone = route53.HostedZone.fromLookup(this, "devZone", {
       domainName: 'dev.flur.ee'
     });
@@ -35,7 +36,8 @@ export class NodeDemoAwsStack extends cdk.Stack {
     new route53.CnameRecord(this, "NodeLB", {
       zone: zone,
       recordName: 'node-app',
-      domainName: frontend.loadBalancer.loadBalancerDnsName
+      domainName: frontend.loadBalancer.loadBalancerDnsName,
+      ttl: cdk.Duration.seconds(60)
     })
   }
 
@@ -64,7 +66,7 @@ export class NodeDemoAwsStack extends cdk.Stack {
       streamPrefix: "ledger"
     });
     const container = taskDefinition.addContainer('LedgerContainer', {
-      image: ecs.ContainerImage.fromRegistry("fluree/ledger:main"),
+      image: ecs.ContainerImage.fromRegistry("fluree/ledger:master"),
       memoryLimitMiB: 3584,
       logging
     })
