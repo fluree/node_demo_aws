@@ -64,7 +64,7 @@ export class NodeDemoAwsStack extends cdk.Stack {
       streamPrefix: "ledger"
     });
     const container = taskDefinition.addContainer('LedgerContainer', {
-      image: ecs.ContainerImage.fromRegistry("fluree/ledger:master"),
+      image: ecs.ContainerImage.fromRegistry("fluree/ledger:main"),
       memoryLimitMiB: 3584,
       logging
     })
