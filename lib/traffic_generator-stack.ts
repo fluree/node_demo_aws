@@ -31,7 +31,7 @@ export class TrafficGeneratorStack extends cdk.Stack {
         new ecs.FargateService(this, 'TrafficGenService', {
             cluster,
             taskDefinition: taskDef,
-            desiredCount: 20
+            desiredCount: 0
         })
 
 
