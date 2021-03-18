@@ -21,7 +21,6 @@ export class NodeDemoAwsStack extends cdk.Stack {
 
     const vpc = this.vpc;
 
-
     //create ledger ec2 backed ecs
     const ledger = this.createLedgerService(vpc);
 
@@ -66,7 +65,7 @@ export class NodeDemoAwsStack extends cdk.Stack {
       streamPrefix: "ledger"
     });
     const container = taskDefinition.addContainer('LedgerContainer', {
-      image: ecs.ContainerImage.fromRegistry("fluree/ledger:master"),
+      image: ecs.ContainerImage.fromRegistry("fluree/ledger:main"),
       memoryLimitMiB: 3584,
       logging
     })
@@ -104,8 +103,8 @@ export class NodeDemoAwsStack extends cdk.Stack {
     });
 
     const scalableTarget = ALBFS.service.autoScaleTaskCount({
-      minCapacity: 1,
-      maxCapacity: 10
+      minCapacity: 2,
+      maxCapacity: 20
     });
 
     scalableTarget.scaleOnCpuUtilization('CPUScaling', {

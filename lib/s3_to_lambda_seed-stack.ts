@@ -10,6 +10,7 @@ export interface S3ToLambdaSeedStackProps extends cdk.StackProps {
     vpc: ec2.Vpc;
 }
 
+
 export class S3ToLambdaSeedStack extends cdk.Stack {
     constructor(scope: cdk.Construct, id: string, props: S3ToLambdaSeedStackProps) {
         super(scope, id, props);

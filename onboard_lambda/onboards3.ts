@@ -15,12 +15,10 @@ const s3 = new AWS.S3();
 
 exports.handler = async (event: any) => {
     //log the event
-    console.log(event.Records[0].s3);
     const payload = event.Records[0].s3;
     const srcBucket = payload.bucket.name;
-    console.log("bucket: ", srcBucket);
     const srcKey = payload.object.key;
-    console.log("key: ", srcKey);
+
     try {
         const params = {
             Bucket: srcBucket,

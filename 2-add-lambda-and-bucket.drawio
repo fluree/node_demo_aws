@@ -1,6 +1,6 @@
-<mxfile host="65bd71144e" modified="2021-03-11T19:41:49.638Z" agent="5.0 (Macintosh; Intel Mac OS X 11_2_3) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.54.1 Chrome/87.0.4280.141 Electron/11.3.0 Safari/537.36" etag="zlqog0onjroFFtSdGXNj" version="14.2.4" type="embed">
+<mxfile>
     <diagram id="8xxlJriHngn7J2Qc-iI4" name="Page-1">
-        <mxGraphModel dx="799" dy="444" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="777" dy="397" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -52,16 +52,16 @@
                 <mxCell id="33" value="Ledger Server running on port 8090" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
                     <mxGeometry x="605.5" y="223" width="115" height="22" as="geometry"/>
                 </mxCell>
-                <mxCell id="34" value="" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.bucket;fillColor=#E05243;gradientColor=none;" vertex="1" parent="1">
+                <mxCell id="34" value="" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.bucket;fillColor=#E05243;gradientColor=none;" parent="1" vertex="1">
                     <mxGeometry x="191" y="106" width="43" height="37.5" as="geometry"/>
                 </mxCell>
-                <mxCell id="35" value="" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.lambda_function;fillColor=#F58534;gradientColor=none;" vertex="1" parent="1">
+                <mxCell id="35" value="" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.lambda_function;fillColor=#F58534;gradientColor=none;" parent="1" vertex="1">
                     <mxGeometry x="310" y="103.13" width="43" height="43.25" as="geometry"/>
                 </mxCell>
-                <mxCell id="36" value="Lambda triggered by bucket upload" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                <mxCell id="36" value="Lambda triggered by bucket upload" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
                     <mxGeometry x="274" y="69" width="115" height="20" as="geometry"/>
                 </mxCell>
-                <mxCell id="37" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;elbow=vertical;startArrow=none;endFill=1;strokeColor=#545B64;rounded=0;" edge="1" parent="1">
+                <mxCell id="37" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;elbow=vertical;startArrow=none;endFill=1;strokeColor=#545B64;rounded=0;" parent="1" edge="1">
                     <mxGeometry width="100" relative="1" as="geometry">
                         <mxPoint x="365" y="122" as="sourcePoint"/>
                         <mxPoint x="450" y="206" as="targetPoint"/>
@@ -70,13 +70,13 @@
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="38" value="Load Balanced Node Edge Client Cluster&lt;br&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                <mxCell id="38" value="Load Balanced Node Edge Client Cluster&lt;br&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
                     <mxGeometry x="395.5" y="225" width="115" height="20" as="geometry"/>
                 </mxCell>
-                <mxCell id="39" value="send transaction" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                <mxCell id="39" value="send transaction" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
                     <mxGeometry x="367" y="123.5" width="115" height="20" as="geometry"/>
                 </mxCell>
-                <mxCell id="40" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;elbow=vertical;startArrow=none;endFill=1;strokeColor=#545B64;rounded=0;" edge="1" parent="1">
+                <mxCell id="40" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;elbow=vertical;startArrow=none;endFill=1;strokeColor=#545B64;rounded=0;" parent="1" edge="1">
                     <mxGeometry width="100" relative="1" as="geometry">
                         <mxPoint x="237" y="123.5" as="sourcePoint"/>
                         <mxPoint x="296" y="124" as="targetPoint"/>
