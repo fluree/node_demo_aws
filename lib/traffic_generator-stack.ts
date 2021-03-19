@@ -3,15 +3,14 @@ import * as ecs from '@aws-cdk/aws-ecs';
 import * as ec2 from '@aws-cdk/aws-ec2';
 export interface TrafficGeneratorProps extends cdk.StackProps {
     queryUrl: string
+    vpc: ec2.Vpc
 }
 
 export class TrafficGeneratorStack extends cdk.Stack {
     constructor(scope: cdk.Construct, id: string, props: TrafficGeneratorProps) {
         super(scope, id, props);
 
-        const vpc = new ec2.Vpc(this, "TrafficGenVpc", {
-            maxAzs: 2
-        })
+        const vpc = props.vpc;
 
         const cluster = new ecs.Cluster(this, 'TrafficGenCluster', {
             vpc
@@ -31,7 +30,7 @@ export class TrafficGeneratorStack extends cdk.Stack {
         new ecs.FargateService(this, 'TrafficGenService', {
             cluster,
             taskDefinition: taskDef,
-            desiredCount: 50
+            desiredCount: 1
         })
 
 
